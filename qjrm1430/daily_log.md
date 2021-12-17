@@ -7,4 +7,4 @@
 - Git 설정 및 칼리 설치
 
 # 2021/12/17
-- OWASP DirBuster 도구 kali 실습
+- OWASP DirBuster 도구 kali환경에서 실습
