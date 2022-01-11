@@ -54,6 +54,39 @@ def brute_dir(word_queue, extensions=None):
     while not word_queue.empty():
         try_this = word_queue.get()
         try_list = []
+        
+        if '.' not in try_this:
+            try_list.append("/{}/".format(try_this))
+        else:
+            try_list.append("/{}".format(try_this))
+            
+        if extensions:
+            for extension in extensions:
+                try_list.append("/{}{}".format(try_this, extension))
+                
+        for brute in try_list:
+            url = "{}{}".format(target, p.quote(brute))
+            
+            try:
+                http = urllib3.PoolManager()
+                head = {}
+                head["User_Agent"] = user_agent
+                res = http.request("GET", headers=head, url=url)
+                
+                if len(res.data):
+                    if res.status != 404:
+                        print("[{}] ==> {}".format(res.status, url))
+            
+            except(e.URLError, e.HTTPError):
+                if hasattr(e.HTTPError, 'code') and e.HTTPError.code != 404:
+                    print("!!! [{}] ==> {}".format(e.HTTPError.code, url))
+                pass
+            
+d_queue = create_wordlist(wl_file)
 
-if __name__ == __main__:
+for i in range(threads):
+    t = threading.Thread(target=brute_dir, args=(d_queue, ext, ))
+    t.start()
+
+if __name__ == "__main__":
     target = input()
