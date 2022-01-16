@@ -7,9 +7,11 @@ import argparse
 import logging
 import mechanize
 import sys
+import http.client
 from bs4 import BeautifulSoup
+from webdriver_manager.chrome import ChromeDriverManager
 
-br = mechanize.Browser()  # initiating the browser
+br = mechanize.Browser()
 br.addheaders = [
     ('User-agent',
      'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11)Gecko/20071127 Firefox/2.0.0.11')
@@ -20,7 +22,7 @@ br.set_handle_refresh(False)
 payloads = ['<svg "ons>', '" onfocus="alert(1);', 'javascript:alert(1)']
 blacklist = ['.png', '.jpg', '.jpeg', '.mp3', '.mp4', '.avi', '.gif', '.svg',
              '.pdf']
-xssLinks = []            # TOTAL CROSS SITE SCRIPTING FINDINGS
+xssLinks = []
 
 
 class color:
@@ -36,7 +38,7 @@ class color:
         logger.log(lvl, col + msg + color.END)
 
 logger = logging.getLogger(__name__)
-lh = logging.StreamHandler()  # Handler for the logger
+lh = logging.StreamHandler() 
 logger.addHandler(lh)
 formatter = logging.Formatter('[%(asctime)s] %(message)s', datefmt='%H:%M:%S')
 lh.setFormatter(formatter)
@@ -66,7 +68,6 @@ def testPayload(payload, p, link):
         xssLinks.append(report)
     br.back()
 
-
 def initializeAndFind():
 
     if not results.url:
@@ -82,7 +83,7 @@ def initializeAndFind():
     for url in allURLS:
         smallurl = str(url)
         try:
-            test = urllib3.request.Request(url)
+            test = http.client.HTTPSConnection(smallurl)
             test.request("GET", "/")
             response = test.getresponse()
             if (response.status == 200) | (response.status == 302):
@@ -103,7 +104,7 @@ def initializeAndFind():
             br.open(url)
             color.log(logging.INFO, color.GREEN,
                       'Finding all the links of the website ' + str(url))
-            for link in br.links():        # finding the links of the website
+            for link in br.links():
                 if smallurl in str(link.absolute_url):
                     firstDomains.append(str(link.absolute_url))
             firstDomains = list(set(firstDomains))
@@ -117,7 +118,6 @@ def initializeAndFind():
             for link in firstDomains:
                 try:
                     br.open(link)
-                    # going deeper into each link and finding its links
                     for newlink in br.links():
                         if smallurl in str(newlink.absolute_url):
                             largeNumberOfUrls.append(newlink.absolute_url)
@@ -126,7 +126,7 @@ def initializeAndFind():
             firstDomains = list(set(firstDomains + largeNumberOfUrls))
             color.log(logging.INFO, color.GREEN,
                       'Total Number of links to test have become: ' +
-                      str(len(firstDomains)))  # all links have been found
+                      str(len(firstDomains)))
     return firstDomains
 
 
