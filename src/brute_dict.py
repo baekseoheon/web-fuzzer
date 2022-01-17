@@ -2,19 +2,17 @@
 
 import os
 import queue
-import threading
+import time
 import urllib3
+import concurrent.futures
 import urllib.parse as p 
 import urllib.error as e
 
-threads = 5
 target = ''
 # wordlist_file
 wl_file = 'wordlist.txt'
 ext = [".php", ".txt"]
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36'
-#queue_data = []
-
 
 def create_wordlist(wl_file):
     is_resume = False
@@ -31,24 +29,7 @@ def create_wordlist(wl_file):
 
     fp.close()
     return words
-
     
-'''
-def GetItemList(q):
-    n = q.qsize()
-    while n > 0:
-        queue_data.append(q.get())
-        n -= 1
-'''
-
-'''
-f = open("word_test.txt", 'a+')
-word = create_wordlist(wl_file)
-while word.qsize() > 0:
-    f.write(str(word.get())+'\n')
-f.close
-'''
-
 def brute_dir(word_queue, extensions=None):
 
     while not word_queue.empty():
@@ -64,9 +45,10 @@ def brute_dir(word_queue, extensions=None):
             for extension in extensions:
                 try_list.append("/{}{}".format(try_this, extension))
                 
+           # naver.com/blob
+           # naver.com/.blob/
         for brute in try_list:
             url = "{}{}".format(target, p.quote(brute))
-            
             try:
                 http = urllib3.PoolManager()
                 head = {}
@@ -76,6 +58,10 @@ def brute_dir(word_queue, extensions=None):
                 if len(res.data):
                     if res.status != 404:
                         print("[{}] ==> {}".format(res.status, url))
+                    else:
+                        print(f'can\'t find : {url}\n')
+                else:
+                    print(f'there is no data : {url}\n')
             
             except(e.URLError, e.HTTPError):
                 if hasattr(e.HTTPError, 'code') and e.HTTPError.code != 404:
@@ -84,9 +70,9 @@ def brute_dir(word_queue, extensions=None):
             
 d_queue = create_wordlist(wl_file)
 
-for i in range(threads):
-    t = threading.Thread(target=brute_dir, args=(d_queue, ext, ))
-    t.start()
-
 if __name__ == "__main__":
-    target = input()
+    target = input("target : ")
+    print("brute_dir() starting...\n")
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        result = [executor.submit(brute_dir, d_queue, ext) for _ in range(10)]
+        print("working....\n")
