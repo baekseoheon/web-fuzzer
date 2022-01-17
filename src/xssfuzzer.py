@@ -1,15 +1,10 @@
 #!/bin/python3
-import urllib3
-import urllib.request
-import urllib.parse as p
-import urllib.error as e
-import argparse
-import logging
 import mechanize
 import sys
 import http.client
-from bs4 import BeautifulSoup
-from webdriver_manager.chrome import ChromeDriverManager
+import argparse
+import logging
+from urllib import parse
 
 br = mechanize.Browser()
 br.addheaders = [
