@@ -9,7 +9,6 @@ import mechanize
 import sys
 import http.client
 from bs4 import BeautifulSoup
-from webdriver_manager.chrome import ChromeDriverManager
 
 br = mechanize.Browser()
 br.addheaders = [
