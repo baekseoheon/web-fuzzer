@@ -4,7 +4,6 @@ import sys
 import http.client
 import argparse
 import logging
-from urllib import parse
 
 br = mechanize.Browser()
 br.addheaders = [
