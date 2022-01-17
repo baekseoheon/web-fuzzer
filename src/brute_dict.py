@@ -75,4 +75,4 @@ if __name__ == "__main__":
     print("brute_dir() starting...\n")
     with concurrent.futures.ThreadPoolExecutor() as executor:
         result = [executor.submit(brute_dir, d_queue, ext) for _ in range(10)]
-        print("working....\n")
+        print("working...\n")
