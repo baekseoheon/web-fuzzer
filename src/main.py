@@ -57,7 +57,6 @@ if __name__=='__main__':
             print("working...")
             result = [executor.submit(brute_dir, d_queue, target, ext) for _ in range(10)]
             
-            print("It worked!\n")
             
     elif arg_parse_result.xss_flag:
         print("xss()")
