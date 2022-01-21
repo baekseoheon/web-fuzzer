@@ -17,22 +17,41 @@ user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Ge
 def create_wordlist(wl_file):
     is_resume = False
     words = queue.Queue()
+    print("------------------------------")
+    print("created wordlist queue")
+    print("------------------------------\n")
 
+    
     with open(wl_file) as fp:
         #if not os.path.isfile(fp):
             #break
+        print("------------------------------")
+        print("file open succeed")
+        print("------------------------------\n")
+        
         dict_names = fp.readline()
+        print("------------------------------")
+        print("a line was read from the file ")
+        print("------------------------------\n")
         while dict_names:
             dict_name_word = dict_names.strip()
             words.put(dict_name_word)
             dict_names = fp.readline()
+        print("------------------------------")
+        print("created wordlist queue")
+        print("------------------------------\n")
 
     fp.close()
     return words
     
-def brute_dir(word_queue, extensions=None):
+def brute_dir(word_queue, target, extensions=None):
 
     while not word_queue.empty():
+        
+        if word_queue.empty():
+            print("wordlist queue empty!")
+            return -1;
+            
         try_this = word_queue.get()
         try_list = []
         
@@ -57,7 +76,7 @@ def brute_dir(word_queue, extensions=None):
                 
                 if len(res.data):
                     if res.status != 404:
-                        print("[{}] ==> {}".format(res.status, url))
+                        print("found : [{}] ==> {}\n".format(res.status, url))
                     else:
                         print(f'can\'t find : {url}\n')
                 else:
@@ -74,5 +93,5 @@ if __name__ == "__main__":
     target = input("target : ")
     print("brute_dir() starting...\n")
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        result = [executor.submit(brute_dir, d_queue, ext) for _ in range(10)]
+        result = [executor.submit(brute_dir, d_queue, target ,ext) for _ in range(10)]
         print("working...\n")

@@ -26,6 +26,9 @@
 .swf
 .web
 @
+Relatorios
+Suporte
+atualizacao
 _
 _adm
 _admin
