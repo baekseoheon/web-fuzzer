@@ -77,8 +77,8 @@ def brute_dir(word_queue, target, extensions=None):
                 if len(res.data):
                     if res.status != 404:
                         print("found : [{}] ==> {}\n".format(res.status, url))
-                    else:
-                        print(f'can\'t find : {url}\n')
+                    #else:
+                     #   print(f'can\'t find : {url}\n')
                 else:
                     print(f'there is no data : {url}\n')
             
