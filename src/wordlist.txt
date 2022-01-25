@@ -103,6 +103,7 @@ _vti_rpc
 _vti_script
 _vti_txt
 _www
+abcd
 ~adm
 ~admin
 ~administrator
