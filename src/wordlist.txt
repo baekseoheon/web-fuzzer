@@ -26,12 +26,9 @@
 .swf
 .web
 @
-<<<<<<< HEAD
-=======
 Relatorios
 Suporte
 atualizacao
->>>>>>> public
 _
 _adm
 _admin

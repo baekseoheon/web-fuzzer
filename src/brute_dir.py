@@ -44,11 +44,7 @@ def create_wordlist(wl_file):
     fp.close()
     return words
     
-<<<<<<< HEAD:src/brute_dict.py
-def brute_dir(word_queue, extensions=None):
-=======
 def brute_dir(word_queue, target, extensions=None):
->>>>>>> public:src/brute_dir.py
 
     while not word_queue.empty():
         
@@ -80,13 +76,9 @@ def brute_dir(word_queue, target, extensions=None):
                 
                 if len(res.data):
                     if res.status != 404:
-<<<<<<< HEAD:src/brute_dict.py
-                        print("[{}] ==> {}".format(res.status, url))
-=======
                         print("found : [{}] ==> {}\n".format(res.status, url))
->>>>>>> public:src/brute_dir.py
-                    else:
-                        print(f'can\'t find : {url}\n')
+                    #else:
+                     #   print(f'can\'t find : {url}\n')
                 else:
                     print(f'there is no data : {url}\n')
             
@@ -101,10 +93,5 @@ if __name__ == "__main__":
     target = input("target : ")
     print("brute_dir() starting...\n")
     with concurrent.futures.ThreadPoolExecutor() as executor:
-<<<<<<< HEAD:src/brute_dict.py
-        result = [executor.submit(brute_dir, d_queue, ext) for _ in range(10)]
-        print("working....\n")
-=======
         result = [executor.submit(brute_dir, d_queue, target ,ext) for _ in range(10)]
         print("working...\n")
->>>>>>> public:src/brute_dir.py
