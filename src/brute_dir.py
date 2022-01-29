@@ -47,24 +47,26 @@ def create_wordlist(wl_file):
         sys.exit(0)
     
 def brute_dir(word_queue, target, extensions=None):
-
     while not word_queue.empty():
-        
-        if word_queue.empty():
-            print("wordlist queue empty!")
-            return -1;
             
         try_this = word_queue.get()
         try_list = []
-        
-        if '.' not in try_this:
-            try_list.append("/{}/".format(try_this))
-        else:
-            try_list.append("/{}".format(try_this))
-            
         if extensions:
-            for extension in extensions:
-                try_list.append("/{}{}".format(try_this, extension))
+            if '.' not in try_this:
+                if '/' == try_this:
+                    try_list.append("/{}".format(try_this))
+                else:
+                    try_list.append("/{}/".format(try_this))
+                    for extension in extensions:
+                        try_list.append("/{}{}".format(try_this, extension))
+            else:
+                try_list.append("/{}".format(try_this))
+        else:
+            if '.' not in try_this:
+                try_list.append("/{}/".format(try_this))
+            else:
+                try_list.append("/{}".format(try_this))
+                    
                 
            # naver.com/blob
            # naver.com/.blob/
@@ -78,16 +80,27 @@ def brute_dir(word_queue, target, extensions=None):
                 
                 if len(res.data):
                     if res.status != 404:
-                        print("found : [{}] ==> {}\n".format(res.status, url))
-                    #else:
-                     #   print(f'can\'t find : {url}\n')
+                        if res.status == 200:
+                            print("==================================================")
+                            print("found : [{}] ==> {}\n".format(res.status, url))
+                            print("==================================================")
+                            for _ in try_list:
+                                url2 = "{}{}".format(url, try_list)
+                                res2 = http.request("GET", header=head, url = url2_)
+                                
+                                if len(res2.data):
+                                    if res2.status != 404:
+                                        if res2.status == 200:
+                                            print("there is : {}".format(url2))
+                                else: print("there is no file")
+                        
+                    
                 else:
                     print(f'there is no data : {url}\n')
             
             except(e.URLError, e.HTTPError):
                 if hasattr(e.HTTPError, 'code') and e.HTTPError.code != 404:
                     print("!!! [{}] ==> {}".format(e.HTTPError.code, url))
-                pass
             
 
 
