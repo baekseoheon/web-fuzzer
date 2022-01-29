@@ -80,6 +80,10 @@ def brute_dir(word_queue, target, extensions=None):
                 
                 if len(res.data):
                     if res.status != 404:
+                        
+                        
+                        
+                        
                         if res.status == 200:
                             print("==================================================")
                             print("found : [{}] ==> {}".format(res.status, url))
