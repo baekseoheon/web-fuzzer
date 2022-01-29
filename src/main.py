@@ -33,8 +33,14 @@ if __name__=="__main__":
     banner()
     specify_text_color()
     arg_parse_result = arg_parse()
-    target = arg_parse_result.url
-    wordlist_name = arg_parse_result.file
+    if arg_parse_result.url:
+        target = arg_parse_result.url
+    
+    if arg_parse_result.file:
+        wordlist_name = arg_parse_result.file
+        print(wordlist_name)
+    else:
+        wordlist_name = 0
     
     if arg_parse_result.brute_flag:
         if wordlist_name:
@@ -56,8 +62,6 @@ if __name__=="__main__":
         with concurrent.futures.ThreadPoolExecutor() as executor:
             print("working...")
             result = [executor.submit(brute_dir, d_queue, target, ext) for _ in range(10)]
-            
-            print("It worked!\n")
             
     elif arg_parse_result.xss_flag:
         print("xss()")
