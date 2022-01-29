@@ -54,7 +54,7 @@ def brute_dir(word_queue, target, extensions=None):
         if extensions:
             if '.' not in try_this:
                 if '/' == try_this:
-                    try_list.append("/{}".format(try_this))
+                    try_list.append("{}".format(try_this))
                 else:
                     try_list.append("/{}/".format(try_this))
                     for extension in extensions:
@@ -82,8 +82,9 @@ def brute_dir(word_queue, target, extensions=None):
                     if res.status != 404:
                         if res.status == 200:
                             print("==================================================")
-                            print("found : [{}] ==> {}\n".format(res.status, url))
+                            print("found : [{}] ==> {}".format(res.status, url))
                             print("==================================================")
+                            '''
                             for _ in try_list:
                                 url2 = "{}{}".format(url, try_list)
                                 res2 = http.request("GET", header=head, url = url2_)
@@ -92,13 +93,14 @@ def brute_dir(word_queue, target, extensions=None):
                                     if res2.status != 404:
                                         if res2.status == 200:
                                             print("there is : {}".format(url2))
-                                else: print("there is no file")
-                        
-                    
+                            '''     
                 else:
                     print(f'there is no data : {url}\n')
+            #except Exception as e: print("error : ", e)
             
-            except(e.URLError, e.HTTPError):
+            
+            except(e.URLError, e.HTTPError) as e:
+                print("except", e)
                 if hasattr(e.HTTPError, 'code') and e.HTTPError.code != 404:
                     print("!!! [{}] ==> {}".format(e.HTTPError.code, url))
             

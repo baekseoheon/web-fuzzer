@@ -26,6 +26,8 @@
 .swf
 .web
 @
+content
+about
 Relatorios
 Suporte
 atualizacao
