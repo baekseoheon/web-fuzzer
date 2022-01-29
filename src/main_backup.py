@@ -9,7 +9,8 @@ from text_color import *
 from banner import *
 from arg_parse import *
 from usage import *
-from brute_dir import *
+from brute_dir_backup import *
+from concurrent.futures import ThreadPoolExecutor
 
 if sys.version > '3':
     import urllib.parse as urlparse
@@ -59,12 +60,20 @@ if __name__=="__main__":
             print("------------------------------")
             print("created wordlist....")
             print("------------------------------\n")
+        #dir_scan(target, wordlist, ext)
+
+        '''
+        with ThreadPoolExecutor() as executor:
+            res_list = [executor.submit(dir_scan, target, wordlist, ext) for _ in range(10)]
+        for res in res_list:
+            print(res)
+        '''
         dir_scan(target, wordlist, ext)
         '''
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with ThreadPoolExecutor() as executor:
             print("working...")
-            result = [executor.submit(brute_dir, d_queue, target, ext) for _ in range(10)]
-        '''    
+            result = [executor.submit(dir_scan_just, target, wordlist, ext) for _ in range(10)]    
+        '''
     elif arg_parse_result.xss_flag:
         print("xss()")
         

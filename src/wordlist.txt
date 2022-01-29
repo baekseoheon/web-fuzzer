@@ -1,4 +1,5 @@
 /
+a
 .bash_history
 .bashrc
 .cache
@@ -31,6 +32,13 @@ about
 Relatorios
 Suporte
 atualizacao
+ 
+a
+b
+c
+d
+e
+f
 _
 _adm
 _admin
