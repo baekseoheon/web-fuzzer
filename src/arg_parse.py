@@ -6,7 +6,7 @@ def arg_parse():
     
     if len(sys.argv) > 1:
         parser = argparse.ArgumentParser(description='Process some option')
-        parser.add_argument('-b', '--dir-brute-force', action='store_true', dest='brute_flag', help='If you want to do a driectory brute foce attack on the url')
+        parser.add_argument('-b', '--dir-brute-force', action='store_truez', dest='brute_flag', help='If you want to do a driectory brute foce attack on the url')
         parser.add_argument('-x', '--xss', action='store_true', dest='xss_flag', help='If you want to do xss attack on the url')
         parser.add_argument('-s', '--sql-injection', action='store_true', dest='sql_flag', help='If you want to do sql injection attack on the url')
         parser.add_argument('-u', '--url', '--target', action='store', dest='url', help='The URL to analyze')
