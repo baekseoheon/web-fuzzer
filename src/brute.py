@@ -77,8 +77,8 @@ def brute_dir(word_queue, target, extensions=None):
                 if len(res.data):
                     if res.status != 404:
                         print("found : [{}] ==> {}\n".format(res.status, url))
-                    else:
-                        print(f'can\'t find : {url}\n')
+                    #else:
+                     #   print(f'can\'t find : {url}\n')
                 else:
                     print(f'there is no data : {url}\n')
             
@@ -87,9 +87,10 @@ def brute_dir(word_queue, target, extensions=None):
                     print("!!! [{}] ==> {}".format(e.HTTPError.code, url))
                 pass
             
-d_queue = create_wordlist(wl_file)
+
 
 if __name__ == "__main__":
+    d_queue = create_wordlist(wl_file)
     target = input("target : ")
     print("brute_dir() starting...\n")
     with concurrent.futures.ThreadPoolExecutor() as executor:
