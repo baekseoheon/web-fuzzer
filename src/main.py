@@ -38,12 +38,10 @@ if __name__=="__main__":
     
     if arg_parse_result.file:
         wordlist_name = arg_parse_result.file
-        print(wordlist_name)
-    else:
-        wordlist_name = 0
+    else: wordlist_name = None    
     
     if arg_parse_result.brute_flag:
-        if wordlist_name:
+        if wordlist_name is not None:
             print("------------------------------")
             print('loading wordlist....')
             print("------------------------------\n")

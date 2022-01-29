@@ -1,6 +1,7 @@
 #!/bin/python3
 
 import os
+import sys
 import queue
 import time
 import urllib3
@@ -21,28 +22,29 @@ def create_wordlist(wl_file):
     print("created wordlist queue")
     print("------------------------------\n")
 
-    
-    with open(wl_file) as fp:
-        #if not os.path.isfile(fp):
-            #break
-        print("------------------------------")
-        print("file open succeed")
-        print("------------------------------\n")
+    try:
+        with open(wl_file) as fp:
+            print("------------------------------")
+            print("file open succeed")
+            print("------------------------------\n")
         
-        dict_names = fp.readline()
-        print("------------------------------")
-        print("a line was read from the file ")
-        print("------------------------------\n")
-        while dict_names:
-            dict_name_word = dict_names.strip()
-            words.put(dict_name_word)
             dict_names = fp.readline()
-        print("------------------------------")
-        print("created wordlist queue")
-        print("------------------------------\n")
+            print("------------------------------")
+            print("a line was read from the file ")
+            print("------------------------------\n")
+            while dict_names:
+                dict_name_word = dict_names.strip()
+                words.put(dict_name_word)
+                dict_names = fp.readline()
+            print("------------------------------")
+            print("created wordlist queue")
+            print("------------------------------\n")
 
-    fp.close()
-    return words
+        fp.close()
+        return words
+    except:
+        print("there is no file : %s" % wl_file)
+        sys.exit(0)
     
 def brute_dir(word_queue, target, extensions=None):
 
