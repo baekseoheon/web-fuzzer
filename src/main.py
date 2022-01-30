@@ -9,7 +9,7 @@ from text_color import *
 from banner import *
 from arg_parse import *
 from usage import *
-from brute_dir import *
+from func import *
 
 if sys.version > '3':
     import urllib.parse as urlparse
@@ -70,6 +70,8 @@ if __name__=="__main__":
         
     elif arg_parse_result.sql_flag:
         print("sql injection()")
+    elif arg_parse_result.web_scan_flag:
+        web_scan(target)
         
     else:
         usage()
