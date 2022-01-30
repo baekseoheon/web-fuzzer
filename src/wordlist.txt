@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 /
 a
+=======
+
+>>>>>>> 6c9cd1d (update brute_dir.py)
 .bash_history
 .bashrc
 .cache
@@ -27,6 +31,7 @@ a
 .swf
 .web
 @
+<<<<<<< HEAD
 content
 about
 Relatorios
@@ -39,6 +44,8 @@ c
 d
 e
 f
+=======
+>>>>>>> 6c9cd1d (update brute_dir.py)
 _
 _adm
 _admin
