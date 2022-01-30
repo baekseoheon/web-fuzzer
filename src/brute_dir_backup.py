@@ -1,35 +1,28 @@
 #!/bin/python3
 
 import os
-import re
 import sys
 import queue
 import time
+from turtle import write_docstringdict
 import urllib3
 import requests
-import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 import urllib.parse as p 
 import urllib.error as e
-import requests.exceptions as reqe
-
+import requests.exceptions as re
 target = ''
 # wordlist_file
 wl_file = 'wordlist.txt'
 ext = [".php", ".txt"]
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36'
 
-def delencode(url):
+def deleteencode(url):
     url = url.replace("#", "")
     url = url.replace("%0A", "")
     url = url.replace("\n", "")
     url = url.replace("%40", "@")
     return url
-
-def delschema(url):
-    filename = url.replace("https://", "")
-    filename = url.replace("http://", "")
-    filename = re.sub("\/.*", "", filename)
-    return filename
 
 def create_wordlist(wl_file):
     is_resume = False
@@ -61,6 +54,69 @@ def create_wordlist(wl_file):
     except:
         print("there is no file : %s" % wl_file)
         sys.exit(0)
+
+def dir_scan_one(word_queue, target, extensions=None):
+    while not word_queue.empty():
+        try_this = word_queue.get()
+        try_list = []
+        if extensions:
+            if '.' not in try_this:
+                if '/' == try_this:
+                    try_list.append("{}".format(try_this))
+                else:
+                    try_list.append("/{}/".format(try_this))
+                    for extension in extensions:
+                        try_list.append("/{}{}".format(try_this, extension))
+            else:
+                try_list.append("/{}".format(try_this))
+        else:
+            if '.' not in try_this:
+                try_list.append("/{}/".format(try_this))
+            else:
+                try_list.append("/{}".format(try_this))
+                    
+                
+           # naver.com/blob
+           # naver.com/.blob/
+        for list in try_list:
+            url = "{}{}".format(target, p.quote(list))
+            try:
+                # http = urllib3.PoolManager()
+                headers = {"User_Agent" : user_agent}
+                res = requests.get(url, headers=headers)
+                # res = http.request("GET", headers=head, url=url)
+                
+                if len(res.text):
+                    if res.status_code != 404:
+                        if res.status_code == 200:
+                            print("==================================================")
+                            print("found : [{}] ==> {}".format(res.status_code, url))
+                            print("==================================================")
+                            '''
+                            for _ in try_list:
+                                url2 = "{}{}".format(url, try_list)
+                                res2 = http.request("GET", header=head, url = url2_)
+                                
+                                if len(res2.data):
+                                    if res2.status != 404:
+                                        if res2.status == 200:
+                                            print("there is : {}".format(url2))
+                            ''' 
+                    else:
+                        print("==================================================")
+                        print("not found : [{}] ==> {}".format(res.status_code, url))
+                        print("==================================================")
+                            
+                else:
+                    print(f'there is no data : {url}\n')
+            #except Exception as e: print("error : ", e)
+            
+            
+            except(re.HTTPError) as er:
+                print("except", er)
+                if hasattr(er.HTTPError, 'code') and er.HTTPError.code != 404:
+                    print("!!! [{}] ==> {}".format(er.HTTPError.code, url))
+
 
 def dir_scan(target, wordlist, extensions=None):
     f = open(wordlist, "r")
@@ -98,7 +154,7 @@ def dir_scan(target, wordlist, extensions=None):
 
         for list in try_list:
             url = "{}{}".format(target, p.quote(list))
-            url = delencode(url)
+            url = deleteencode(url)
             
             try:
                 headers = {
@@ -111,20 +167,15 @@ def dir_scan(target, wordlist, extensions=None):
                             print("==================================================")
                             print("found : [{}] ==> {}".format(res.status_code, url))
                             print("==================================================")
-                            if not os.path.isdir("result"):
-                                os.mkdir("result")
-
-                            with open("result/" + delschema(target) + ".txt", "a+") as ff:
-                                ff.write(url+'\n')
                 else: print(f'there is no data : {url}\n')
 
-            except(reqe.HTTPError) as er:
+            except(re.HTTPError) as er:
                 print("except", er)
                 if hasattr(er.HTTPError, 'code') and er.HTTPError.code != 404:
                     print("!!! [{}] ==> {}".format(er.HTTPError.code, url))
         word = f.readline()
     f.close()
-    
+
 def brute_dir(word_queue, target, extensions=None):
     while not word_queue.empty():
             
@@ -159,11 +210,6 @@ def brute_dir(word_queue, target, extensions=None):
                 
                 if len(res.data):
                     if res.status != 404:
-<<<<<<< HEAD
-                        print("found : [{}] ==> {}\n".format(res.status, url))
-                    #else:
-                     #   print(f'can\'t find : {url}\n')
-=======
                         if res.status == 200:
                             print("==================================================")
                             print("found : [{}] ==> {}".format(res.status, url))
@@ -178,7 +224,10 @@ def brute_dir(word_queue, target, extensions=None):
                                         if res2.status == 200:
                                             print("there is : {}".format(url2))
                             '''     
->>>>>>> public
+                    else:
+                        print("==================================================")
+                        print("not found : [{}] ==> {}".format(res.status, url))
+                        print("==================================================")
                 else:
                     print(f'there is no data : {url}\n')
             #except Exception as e: print("error : ", e)

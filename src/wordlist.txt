@@ -1,4 +1,5 @@
-
+/
+a
 .bash_history
 .bashrc
 .cache
@@ -26,9 +27,18 @@
 .swf
 .web
 @
+content
+about
 Relatorios
 Suporte
 atualizacao
+ 
+a
+b
+c
+d
+e
+f
 _
 _adm
 _admin

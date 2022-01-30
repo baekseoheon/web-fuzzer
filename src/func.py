@@ -12,8 +12,6 @@ import urllib.parse as p
 import urllib.error as e
 import requests.exceptions as reqe
 
-target = ''
-# wordlist_file
 wl_file = 'wordlist.txt'
 ext = [".php", ".txt"]
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36'
@@ -114,7 +112,7 @@ def dir_scan(target, wordlist, extensions=None):
                             if not os.path.isdir("result"):
                                 os.mkdir("result")
 
-                            with open("result/" + delschema(target) + ".txt", "a+") as ff:
+                            with open("result/" + delschema(target) + "_dir_scan.txt", "a+") as ff:
                                 ff.write(url+'\n')
                 else: print(f'there is no data : {url}\n')
 
@@ -124,77 +122,20 @@ def dir_scan(target, wordlist, extensions=None):
                     print("!!! [{}] ==> {}".format(er.HTTPError.code, url))
         word = f.readline()
     f.close()
+
+def web_scan(url):
+    res = requests.get(url)
+    print("==================================================")
+    print("{} URL : {}".format(res.status_code, res.url))
+    print("Headers : ", res.headers)
+    print("cookies : ", res.cookies)
+    print("==================================================")
+    if not os.path.isdir("result"):
+        os.mkdir("result")
+
+    with open("result/"+delschema(url)+"_web_scan.txt", "a+") as ff:
+        ff.write('[' + str(res.status_code) + '] ' + str(res.url) + '\n' + str(res.headers) +'\n' + str(res.cookies) + '\n\n')
+        ff.close()
+
+
     
-def brute_dir(word_queue, target, extensions=None):
-    while not word_queue.empty():
-            
-        try_this = word_queue.get()
-        try_list = []
-        if extensions:
-            if '.' not in try_this:
-                if '/' == try_this:
-                    try_list.append("{}".format(try_this))
-                else:
-                    try_list.append("/{}/".format(try_this))
-                    for extension in extensions:
-                        try_list.append("/{}{}".format(try_this, extension))
-            else:
-                try_list.append("/{}".format(try_this))
-        else:
-            if '.' not in try_this:
-                try_list.append("/{}/".format(try_this))
-            else:
-                try_list.append("/{}".format(try_this))
-                    
-                
-           # naver.com/blob
-           # naver.com/.blob/
-        for brute in try_list:
-            url = "{}{}".format(target, p.quote(brute))
-            try:
-                http = urllib3.PoolManager()
-                head = {}
-                head["User_Agent"] = user_agent
-                res = http.request("GET", headers=head, url=url)
-                
-                if len(res.data):
-                    if res.status != 404:
-<<<<<<< HEAD
-                        print("found : [{}] ==> {}\n".format(res.status, url))
-                    #else:
-                     #   print(f'can\'t find : {url}\n')
-=======
-                        if res.status == 200:
-                            print("==================================================")
-                            print("found : [{}] ==> {}".format(res.status, url))
-                            print("==================================================")
-                            '''
-                            for _ in try_list:
-                                url2 = "{}{}".format(url, try_list)
-                                res2 = http.request("GET", header=head, url = url2_)
-                                
-                                if len(res2.data):
-                                    if res2.status != 404:
-                                        if res2.status == 200:
-                                            print("there is : {}".format(url2))
-                            '''     
->>>>>>> public
-                else:
-                    print(f'there is no data : {url}\n')
-            #except Exception as e: print("error : ", e)
-            
-            
-            except(e.URLError, e.HTTPError) as e:
-                print("except", e)
-                if hasattr(e.HTTPError, 'code') and e.HTTPError.code != 404:
-                    print("!!! [{}] ==> {}".format(e.HTTPError.code, url))
-            
-
-
-if __name__ == "__main__":
-    d_queue = create_wordlist(wl_file)
-    target = input("target : ")
-    print("brute_dir() starting...\n")
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        result = [executor.submit(brute_dir, d_queue, target ,ext) for _ in range(10)]
-        print("working...\n")
