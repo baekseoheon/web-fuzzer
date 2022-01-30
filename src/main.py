@@ -25,11 +25,12 @@ try:
 except:
     pass
 
-wl_file = 'wordlist.txt'
-ext = [".php", ".txt"]
-user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36'
+
     
 if __name__=="__main__":
+    wl_file = 'wordlist.txt'
+    ext = [".php", ".txt"]
+    user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36'
     banner()
     specify_text_color()
     arg_parse_result = arg_parse()
@@ -67,7 +68,6 @@ if __name__=="__main__":
         '''    
     elif arg_parse_result.xss_flag:
         xss_scan(target)
-        
     elif arg_parse_result.sql_flag:
         print("sql injection()")
     elif arg_parse_result.web_scan_flag:

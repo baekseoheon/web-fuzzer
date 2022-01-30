@@ -144,7 +144,28 @@ def xss_scan(url):
     for formtag in soup.findAll('form'):
         print('Using' + formtag.get('method') + ' Method')
         if(formtag.get('method').upper() == 'GET'):
-            with open('XSS_payload.txt', "r", errors="replace") as x:
-                for i in x:
-
-    
+            with open('XSS_payload.txt', "r", errors="replace") as code:
+                for i in code:
+                    with open('result/' + delschema(url) + '.txt', "r", errors="replace") as xss:
+                        for j in xss:
+                            html = requests.get(j)
+                            sp = BeautifulSoup(html, "html.parser")
+                            for inputtag in sp.findAll('input'):
+                                try:
+                                    #user = user_agent
+                                    header = {"User-Agent": user_agent}
+                                    inputtagname = inputtag.get('name')
+                                    payload = delencode(url + '/' + formtag.get('action') + '?' + inputtagname + "=" + i)
+                                    req = requests.get(payload, headers=header)
+                                    
+                                    if i in req.text:
+                                        #print("parameter vulnerable")
+                                        print("Vulnerable payload find\t: " + req.url)
+                                        with open("result_xss_scan" + delschema(url) + '_xss_get.txt', "a+") as rf:
+                                            rf.write(payload+"\n")
+                                    else:
+                                        print("Trying\t => [" + req.url + "]")
+                                except:
+                                    pass
+    print("there is no form tag")
+    sys.exit(0)
