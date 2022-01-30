@@ -116,6 +116,7 @@ def dir_scan(target, wordlist, extensions=None):
 
                             with open("result/" + delschema(target) + "_dir_scan.txt", "a+") as ff:
                                 ff.write(url+'\n')
+                    #else: print("dont find : ", url)
                 else: print(f'there is no data : {url}\n')
 
             except(reqe.HTTPError) as er:
