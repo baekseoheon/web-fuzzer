@@ -32,6 +32,7 @@ a
 .web
 @
 <<<<<<< HEAD
+<<<<<<< HEAD
 content
 about
 Relatorios
@@ -46,6 +47,11 @@ e
 f
 =======
 >>>>>>> 6c9cd1d (update brute_dir.py)
+=======
+Relatorios
+Suporte
+atualizacao
+>>>>>>> 7158f08 (upload master from public branch)
 _
 _adm
 _admin

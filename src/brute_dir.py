@@ -65,11 +65,15 @@ def create_wordlist(wl_file):
 def dir_scan(target, wordlist, extensions=None):
     f = open(wordlist, "r")
     
+<<<<<<< HEAD
     word = f.readline()
     while word != '':
         if word == '\n':
             word = f.readline()
             continue
+=======
+def brute_dir(word_queue, target, extensions=None):
+>>>>>>> 7158f08 (upload master from public branch)
 
         if word == '\0':
             word = f.readline()
@@ -160,10 +164,13 @@ def brute_dir(word_queue, target, extensions=None):
                 if len(res.data):
                     if res.status != 404:
 <<<<<<< HEAD
+<<<<<<< HEAD
                         print("found : [{}] ==> {}\n".format(res.status, url))
                     #else:
                      #   print(f'can\'t find : {url}\n')
 =======
+=======
+>>>>>>> 1a2be72 (what2)
                         if res.status == 200:
                             print("==================================================")
                             print("found : [{}] ==> {}".format(res.status, url))
@@ -178,7 +185,15 @@ def brute_dir(word_queue, target, extensions=None):
                                         if res2.status == 200:
                                             print("there is : {}".format(url2))
                             '''     
+<<<<<<< HEAD
 >>>>>>> public
+=======
+=======
+                        print("found : [{}] ==> {}\n".format(res.status, url))
+                    #else:
+                     #   print(f'can\'t find : {url}\n')
+>>>>>>> 7158f08 (upload master from public branch)
+>>>>>>> 1a2be72 (what2)
                 else:
                     print(f'there is no data : {url}\n')
             #except Exception as e: print("error : ", e)
