@@ -11,6 +11,8 @@ import concurrent.futures
 import urllib.parse as p 
 import urllib.error as e
 import requests.exceptions as reqe
+from bs4 import BeautifulSoup
+
 
 wl_file = 'wordlist.txt'
 ext = [".php", ".txt"]
@@ -121,7 +123,6 @@ def dir_scan(target, wordlist, extensions=None):
                 if hasattr(er.HTTPError, 'code') and er.HTTPError.code != 404:
                     print("!!! [{}] ==> {}".format(er.HTTPError.code, url))
         word = f.readline()
-    f.close()
 
 def web_scan(url):
     res = requests.get(url)
@@ -135,7 +136,15 @@ def web_scan(url):
 
     with open("result/"+delschema(url)+"_web_scan.txt", "a+") as ff:
         ff.write('[' + str(res.status_code) + '] ' + str(res.url) + '\n' + str(res.headers) +'\n' + str(res.cookies) + '\n\n')
-        ff.close()
 
+
+def xss_scan(url):
+    res = requests.get(url)
+    soup = BeautifulSoup(res.content, "html.parser")
+    for formtag in soup.findAll('form'):
+        print('Using' + formtag.get('method') + ' Method')
+        if(formtag.get('method').upper() == 'GET'):
+            with open('XSS_payload.txt', "r", errors="replace") as x:
+                for i in x:
 
     
