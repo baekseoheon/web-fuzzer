@@ -1,6 +1,8 @@
 #!/bin/python3
 
+from distutils import errors
 import os
+from pdb import post_mortem
 import re
 import sys
 import queue
@@ -143,7 +145,7 @@ def xss_scan(url):
     res = requests.get(url)
     soup = BeautifulSoup(res.content, "html.parser")
     for formtag in soup.findAll('form'):
-        print('Using' + formtag.get('method') + ' Method')
+        # print('Using' + formtag.get('method') + ' Method')
         if(formtag.get('method').upper() == 'GET'):
             with open('XSS_payload.txt', "r", errors="replace") as code:
                 for i in code:
@@ -168,5 +170,12 @@ def xss_scan(url):
                                         print("Trying\t => [" + req.url + "]")
                                 except:
                                     pass
+        elif(formtag.get('method').upper() == 'POST':
+            with open('xss_playload.txt', "r", errors="replace") as code:
+                for i in code:
+                    with open('result/' + delschema(url) + '.txt', "r", error="replace") as xss:
+                        for j in xss:
+                            html = requests.post
+                
     print("there is no form tag")
     sys.exit(0)
