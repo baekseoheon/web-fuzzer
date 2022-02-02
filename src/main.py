@@ -9,7 +9,7 @@ from text_color import *
 from banner import *
 from arg_parse import *
 from usage import *
-from func import *
+#from func import *
 from func_v2 import *
 
 if sys.version > '3':
@@ -67,7 +67,8 @@ if __name__=="__main__":
             result = [executor.submit(brute_dir, d_queue, target, ext) for _ in range(10)]
         '''    
     elif arg_parse_result.xss_flag:
-        xss(target)
+        print("xss")
+        xss_scan(target)
         print("xss()")
         
     elif arg_parse_result.sql_flag:

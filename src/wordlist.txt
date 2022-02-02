@@ -23,8 +23,6 @@
 .subversion
 .svn
 .web
-<<<<<<< HEAD
-@
 _
 _adm
 _admin
@@ -128,8 +126,7 @@ abcd
 ~user
 ~webmaster
 ~www
-=======
->>>>>>> master
+master
 0
 0-0-1
 0-12

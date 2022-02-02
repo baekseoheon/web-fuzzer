@@ -168,58 +168,56 @@ def xss(url):
             
             
 def xss_scan(url):
-    res = requests.get(url)
+    res = requests.get(url, verify=False)
+    print(res)
     soup = BeautifulSoup(res.content, "html.parser")
+    print(1)
     for formtag in soup.findAll('form'):
-        # print('Using' + formtag.get('method') + ' Method')
+        print('Using' + formtag.get('method') + ' Method')
         if(formtag.get('method').upper() == 'GET'):
-            with open('xss_payload.txt', "r", errors="replace") as code: # payload 가져오기
-                for i in code:
-                    with open('result/' + delschema(url) + '.txt', "r", errors="replace") as xss:
-                        for j in xss:
-                            html = requests.get(j)
-                            sp = BeautifulSoup(html, "html.parser")
-                            for inputtag in sp.findAll('input'):
-                                try:
-                                    #user = user_agent
-                                    header = {"User-Agent": user_agent}
-                                    inputtagname = inputtag.get('name')
-                                    payload = delencode(url + '/' + formtag.get('action') + '?' + inputtagname + "=" + i)
-                                    req = requests.get(payload, headers=header)
-                                    
-                                    if i in req.text:
-                                        #print("parameter vulnerable")
-                                        print("Vulnerable payload find\t: " + req.url)
-                                        with open("result_xss_scan" + delschema(url) + '_xss_get.txt', "a+") as rf:
-                                            rf.write(payload+"\n")
-                                    else:
-                                        print("Trying\t => [" + req.url + "]")
-                                except:
-                                    pass
-        elif(formtag.get('method').upper() == 'POST'):
-            with open('xss_playload.txt', "r", errors="replace") as wordlist:
+            with open('xss_payload.txt', "r", errors="replace") as wordlist: # payload 가져오기
                 for i in wordlist:
-                    with open('result/' + delschema(url) + '.txt', "r", error="replace") as xss:
-                        for j in xss:
-                            h = requests.get(j)
-                            soup_p = Beautifulsoup(h, "html.parser")
-                            for inputtag in soup_p.findAll('input'):
-                                data = {}
-                                inputtagname = inputtag.get('name')
-                                if inputtagname is None:
-                                    continue
-                                data[inputtagname] = i
-                                try:
-                                    header = user_agent
-                                    attackcode = delencode(url + '/' + formtag.get('action'))
-                                    rep = reqeusts.post(attackcode, headers=header, data=data)
+                    for inputtag in soup.findAll('input'):
+                        try:
+                            #user = user_agent
+                            header = {"User-Agent": user_agent}
+                            inputtagname = inputtag.get('name')
+                            payload = delencode(url + '/' + formtag.get('action') + '?' + inputtagname + "=" + i)
+                            req = requests.get(payload, headers=header)
+                                    
+                            if i in req.text:
+                                #print("parameter vulnerable")
+                                print("Vulnerable payload find\t: " + req.url)
+                                with open("result_xss_scan" + delschema(url) + '_xss_get.txt', "a+") as rf:
+                                        rf.write(payload+"\n")
+                            else: print("Trying\t => [" + req.url + "]")
+                        except:
+                            pass
+        elif(formtag.get('method').upper() == 'POST'):
+            print('Using' + formtag.get('method') + ' Method')
+            with open('xss_payload.txt', "r", errors="replace") as wordlist:
+                for i in wordlist:
+                    for inputtag in soup.findAll('input'):
+                        inputtagname = inputtag.get('name')
+                        if inputtagname is None:
+                            continue
+                        data = {}
+                        data[inputtagname] = i
+                        print("input tag name : {}, payload : {}".format(inputtagname, data[inputtagname]))
+                        try:
+                            header = user_agent
+                            payload = delencode(url + '/' + formtag.get('action'))
+                            #print(attackcode)
+                            rep = requests.post(payload, headers=header, data=data)
 
-                                    if i in rep.text:
-                                        print("Vulneranle Payload Find\t: " + rep.url)
-                                        with open("result_xss_scan" + delschema(url) + '_xss_post.txt', "a+") as rf:
-                                            rf.write(attackcode + "\n" + inputtagname + ":" + i + '\n')
-                                    else
-                                    print("Trying\t:", rep.url)
-                                except:
-                                    pass
+                            if rep.status_code == 200:
+                                print("Vulneranle Payload Find\t: " + rep.url)
+                                with open("result_xss_scan" + delschema(url) + '_xss_post.txt', "a+") as rf:
+                                    rf.write(payload + "\n" + inputtagname + ":" + i + '\n')
+                            else:
+                                print("Trying\t:", rep.url)
+                        except: pass
+        else: 
+            print('Using' + formtag.get('method') + ' Method')
+
     sys.exit(0)
