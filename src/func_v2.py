@@ -15,7 +15,7 @@ import urllib.error as e
 import requests.exceptions as reqe
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from seleniumrequests import Firefox
+from seleniumrequests import Chrome
 
 
 wl_file = 'wordlist.txt'
@@ -192,37 +192,55 @@ def xss_scan(url):
         elif (formtag.get('method').upper() == 'POST'):
             print("Using POST method")
             with open('xss_payload.txt', 'r', errors='error') as code:
-                for i in code:
-                    for inputtag in soup.findAll('input'):
-                        inputtagname = inputtag.get('name')
-                        if inputtagname is None:
-                            continue
-                        data = {}
-                        data[inputtagname] = i
-                        #print("input tag name : {}, payload : {}".format(inputtagname, data[inputtagname]))
-                        try:
-                            payload = delencode(url + '/' + formtag.get('action'))
-                            #print(attackcode)
-                            #rep = requests.post(payload, headers=header, data=data)
-                            firefoxdriver = Firefox()
-                            res = firefoxdriver.request('POST', payload, data=data)
-                            
-                            alert = res.switch_to_alert()
-                            if alert:
-                                alert.accept()
+                i = code.readline()
+                print(i)
+                #for i in code:
+                for inputtag in soup.findAll('input'):
+                    inputtagname = inputtag.get('name')
+                    if inputtagname is None:
+                        continue
+                    data = {}
+                    data[inputtagname] = i
+                    #print("input tag name : {}, payload : {}".format(inputtagname, data[inputtagname]))
+                    try:
+                        header = {"User-Agent" : user_agent}
+                        payload = delencode(url + '/' + formtag.get('action'))
+                        print("payload ", payload)
+                        rep = driver.request('POST', payload, data=data)
+                        print(rep.content)
+                        if rep.content:
+                            print(rep.content)
+                            print("Vulneranle Payload Find\t: " + rep.url)
+                            with open("result_xss_scan/" + delschema(url) + '_xss_post.txt', "a+") as rf:
+                                rf.write(payload + "\n" + inputtagname + ":" + i + '\n')
+                        else:
+                            print("Trying\t:", rep.url)
+                        driver.quit()
 
-                                print("Vulnerable payload find\t: " + current_url)
-                                with open("result_xss_scan" + delschema(url) + '_xss_get.txt', "a+") as rf:
-                                    rf.write(payload+"\n")
-                            '''
-                            if rep.status_code == 200:
-                                print("Vulneranle Payload Find\t: " + rep.url)
-                                with open("result_xss_scan" + delschema(url) + '_xss_post.txt', "a+") as rf:
-                                    rf.write(payload + "\n" + inputtagname + ":" + i + '\n')
-                            else:
-                                print("Trying\t:", rep.url)
-                            '''
-                        except: pass
+                        #rep = requests.post(payload, headers=header, data=data)
+                        #firefoxdriver = Firefox()
+                        #res = firefoxdriver.request('POST', payload, data=data)
+
+                        '''
+                        alert = res.switch_to_alert()
+                        print("alert", alert)
+                        if alert:
+                            alert.accept()
+
+                            print("Vulnerable payload find\t: " + current_url)
+                            with open("result_xss_scan" + delschema(url) + '_xss_get.txt', "a+") as rf:
+                                rf.write(payload+"\n")
+                                '''
+                        '''
+                        if rep.status_code == 200:
+                            print("Vulneranle Payload Find\t: " + rep.url)
+                            with open("result_xss_scan/" + delschema(url) + '_xss_post.txt', "a+") as rf:
+                                rf.write(payload + "\n" + inputtagname + ":" + i + '\n')
+                        else:
+                            print("Trying\t:", rep.url)
+                    
+                        '''
+                    except: pass
     driver.close()
 
                 
