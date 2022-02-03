@@ -15,24 +15,28 @@ time_to_load = 0.0
 def get_input_fields(URL):
     # URL을 가져오고 그 URL에 있는 모든 입력 태그의 ID와 이름을 반환 
     # :매개변수: URL - 정보를 가져올 URL
-	# html 페이지에 요청
-	r = requests.get(URL)
-	soup = BeautifulSoup(r.text, 'html.parser')
+    # html 페이지에 요청
+    r = requests.get(URL)
+    soup = BeautifulSoup(r.text, 'html.parser')
 
-	# 모든 input 태그 확인
-	fields = []
-	for inpt in soup.find_all("input"):
-	# 일부 사이트는 ID 대신 태그 이름을 사용하여 데이터 수신
-		if "id" in inpt.attrs:
-			fields.append(inpt["id"])
-		elif "name" in inpt.attrs:
-			fields.append(inpt["name"])
-		elif inpt.attrs["type"].lower() == "submit":
-			pass
-		else:
-			print("Can't handle this input tag:\n" + str(inpt))
-		test_logger.debug(" Input Fields: {}".format(fields))
-	return fields
+    # 모든 input 태그 확인
+    fields = []
+    for inpt in soup.find_all("input"):
+    # 일부 사이트는 ID 대신 태그 이름을 사용하여 데이터 수신
+        if "id" in inpt.attrs:
+            fields.append(inpt["id"])
+        elif "name" in inpt.attrs:
+            fields.append(inpt["name"])
+        elif "uid" in inpt.attrs:
+            fields.append(inpt["uid"])
+        elif "uname" in inpt.attrs:
+            fields.append(inpt["uname"])
+        elif inpt.attrs["type"].lower() == "submit":
+            pass
+        else:
+            print("Can't handle this input tag:\n" + str(inpt))
+        test_logger.debug(" Input Fields: {}".format(fields))
+    return fields
 
 def check_method(html):
     #지정된 html의 전송 방법이 POST인지 GET인지 확인
@@ -92,13 +96,12 @@ def get_info(URL, s="abudy"):
 
 def payload_check(URL, payload):
 	"""
-    This is the proper wat to use this file.
-    You give the funtion a url and a string, and the function checks
-    whether or not the string has an impact on the site.
-    return:
-    error - to alert that the string is giving an error
-    success - To alert that the string is working
-    normal - to alert that there is no special impact on the site
+        payload 확인
+        url과 문자열을 지정하면 해당 문자열이 사이트에 영향을 미치는지 여부를 확인한다.
+        반환값:
+        오류 - 문자열이 오류를 발생시키고 있음을 경고
+        성공 - 문자열이 작동 중임을 경고
+        정상 - 사이트에 특별한 영향이 없음을 경고
     """
 
 	normal_time, normal_length = get_info(URL)
