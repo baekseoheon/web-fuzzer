@@ -1,8 +1,6 @@
 #!/bin/python3
 
-from distutils import errors
 import os
-from pdb import post_mortem
 import re
 import sys
 import queue
@@ -14,12 +12,8 @@ import urllib.parse as p
 import urllib.error as e
 import requests.exceptions as reqe
 from bs4 import BeautifulSoup
-<<<<<<< HEAD
-
-=======
 from selenium import webdriver
 from seleniumrequests import Chrome
->>>>>>> master
 
 wl_file = 'wordlist.txt'
 ext = [".php", ".txt"]
@@ -123,7 +117,7 @@ def dir_scan(target, wordlist, extensions=None):
 
                             with open("result/" + delschema(target) + "_dir_scan.txt", "a+") as ff:
                                 ff.write(url+'\n')
-                    #else: print("dont find : ", url)
+                    #else: print("can not find : ", url)
                 else: print(f'there is no data : {url}\n')
 
             except(reqe.HTTPError) as er:
@@ -131,6 +125,7 @@ def dir_scan(target, wordlist, extensions=None):
                 if hasattr(er.HTTPError, 'code') and er.HTTPError.code != 404:
                     print("!!! [{}] ==> {}".format(er.HTTPError.code, url))
         word = f.readline()
+    f.close()
 
 def xss_scan_v2(url):
     options = webdriver.ChromeOptions()
@@ -253,57 +248,7 @@ def web_scan(url):
 
     with open("result/"+delschema(url)+"_web_scan.txt", "a+") as ff:
         ff.write('[' + str(res.status_code) + '] ' + str(res.url) + '\n' + str(res.headers) +'\n' + str(res.cookies) + '\n\n')
-            
-def xss_scan(url):
-    res = requests.get(url, verify=False)
-    print(res)
-    soup = BeautifulSoup(res.content, "html.parser")
-    print(1)
-    for formtag in soup.findAll('form'):
-        print('Using' + formtag.get('method') + ' Method')
-        if(formtag.get('method').upper() == 'GET'):
-            with open('xss_payload.txt', "r", errors="replace") as wordlist: # payload 가져오기
-                for i in wordlist:
-                    for inputtag in soup.findAll('input'):
-                        try:
-                            #user = user_agent
-                            header = {"User-Agent": user_agent}
-                            inputtagname = inputtag.get('name')
-                            payload = delencode(url + '/' + formtag.get('action') + '?' + inputtagname + "=" + i)
-                            req = requests.get(payload, headers=header)
-                                    
-                            if i in req.text:
-                                #print("parameter vulnerable")
-                                print("Vulnerable payload find\t: " + req.url)
-                                with open("result_xss_scan" + delschema(url) + '_xss_get.txt', "a+") as rf:
-                                        rf.write(payload+"\n")
-                            else: print("Trying\t => [" + req.url + "]")
-                        except:
-                            pass
-        elif(formtag.get('method').upper() == 'POST'):
-            print('Using' + formtag.get('method') + ' Method')
-            with open('xss_payload.txt', "r", errors="replace") as wordlist:
-                for i in wordlist:
-                    for inputtag in soup.findAll('input'):
-                        inputtagname = inputtag.get('name')
-                        if inputtagname is None:
-                            continue
-                        data = {}
-                        data[inputtagname] = i
-                        print("input tag name : {}, payload : {}".format(inputtagname, data[inputtagname]))
-                        try:
-                            header = user_agent
-                            payload = delencode(url + '/' + formtag.get('action'))
-                            #print(attackcode)
-                            rep = requests.post(payload, headers=header, data=data)
+        ff.close()
 
-                            if rep.status_code == 200:
-                                print("Vulneranle Payload Find\t: " + rep.url)
-                                with open("result_xss_scan" + delschema(url) + '_xss_post.txt', "a+") as rf:
-                                    rf.write(payload + "\n" + inputtagname + ":" + i + '\n')
-                            else:
-                                print("Trying\t:", rep.url)
-                        except: pass
-        else: 
-            print('Using' + formtag.get('method') + ' Method')
-    sys.exit(0)
+
+    
