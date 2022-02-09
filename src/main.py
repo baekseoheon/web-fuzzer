@@ -67,9 +67,13 @@ if __name__=="__main__":
             result = [executor.submit(brute_dir, d_queue, target, ext) for _ in range(10)]
         '''    
     elif arg_parse_result.xss_flag:
+<<<<<<< HEAD
         print("xss")
         xss_scan(target)
         print("xss()")
+=======
+        xss_scan_v2(target)
+>>>>>>> master
         
     elif arg_parse_result.sql_flag:
         print("sql injection()")
