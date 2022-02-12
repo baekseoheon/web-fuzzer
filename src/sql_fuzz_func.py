@@ -1,18 +1,12 @@
-from func import *
-import json
-from treelib import Tree, Node
 import numpy as np
 import uuid
 import logging
 import requests 
 from bs4 import BeautifulSoup
-from datetime import date
-import os
-import re
+import json
 import sys
-import queue
-import time
-import urllib3
+from datetime import date
+from treelib import Tree, Node
 
 MAX_RECURSION = 5
 MAX_REPS = 10
@@ -320,7 +314,7 @@ def txt_results():
     return s
 
 # sql_grenerater
-stats = None
+stats = 1
 
 def init_stats(filename):
     #sql_generator 모듈의 통계를 초기화합니다.
