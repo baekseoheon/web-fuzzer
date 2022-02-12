@@ -100,8 +100,8 @@ def init_stat(filename):
         data = json.load(json_file)
 
     statistics = {}
-    for chr, stats in data.items():
-        statistics[chr] = (list(stats.keys()), list(stats.values()))
+    for chr, stats2 in data.items():
+        statistics[chr] = (list(stats2.keys()), list(stats2.values()))
 
     return statistics
 
