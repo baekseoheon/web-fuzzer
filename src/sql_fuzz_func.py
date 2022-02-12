@@ -314,7 +314,7 @@ def txt_results():
     return s
 
 # sql_grenerater
-stats = 1
+stats = None
 
 def init_stats(filename):
     #sql_generator 모듈의 통계를 초기화합니다.
@@ -406,7 +406,8 @@ def finishing_touches(id):
     return new_id, s
 
 def sql_fuzz(debug_mode):
-    
+    global file
+    init_stats(file)
     fuzzer_logger = logging.getLogger("Fuzzer")
     logging.basicConfig(filename="" if debug_mode else "logs/fuzzer.log", level=logging.DEBUG)
     fuzzer_logger.debug("URL: {}, Max base strings: {}, Max tries per string: {}, Odds file: {}, Debug: {}".format(url, total_base_strings, max_tries, file, debug_mode))
