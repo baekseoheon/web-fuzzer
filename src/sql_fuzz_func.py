@@ -1,5 +1,3 @@
-from Tools.sql_generator import *
-from Tools.tester import payload_check
 from func import *
 import json
 from treelib import Tree, Node
