@@ -4,6 +4,7 @@ from re import X
 import sys
 import requests
 import time
+import os
 from pprint import pprint
 from text_color import *
 from banner import *
@@ -81,7 +82,14 @@ if __name__=="__main__":
             init_stats(file)
         if arg_parse_result.debug_mode:
             debug_mode = arg_parse_result.debug_mode
-        sql_fuzz(debug_mode)
+                   
+        if not os.path.isdir("logs"):
+            os.mkdir("logs")
+            if not os.path.isfile("logs/fuzzer.log"):
+                f = open("logs/fuzzer.log", 'w')
+                f.close()
+
+        sql_fuzz(debug_mode)     
         
     elif arg_parse_result.web_scan_flag:
         web_scan(target)

@@ -101,6 +101,7 @@ def dir_scan(target, wordlist, extensions=None):
             url = "{}{}".format(target, p.quote(list))
             url = delencode(url)
             
+            
             try:
                 headers = {
                     'User_Agent' : user_agent
