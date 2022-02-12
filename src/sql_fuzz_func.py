@@ -325,6 +325,7 @@ def txt_results():
     return s
 
 # sql_grenerater
+stats = None
 
 def init_stats(filename):
     #sql_generator 모듈의 통계를 초기화합니다.
