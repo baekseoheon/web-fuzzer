@@ -16,7 +16,7 @@ def arg_parse():
         parser.add_argument('-c', '--cookie', action='store', dest='cookies', help='Specify custom cookie values', nargs='+', default=[])
         parser.add_argument('-f', '--file', action='store', dest='file', help='specify file')
         parser.add_argument('-C', '--max-count', action='store', dest='max_tries', help='Max tries for string, default 7')
-        parser.add_argument('-d', '--debug', action_store='store_True', dest='debug_mode', help='debug mode, default False')
+        parser.add_argument('-d', '--debug', action='store_True', dest='debug_mode', help='debug mode, default False')
         arg_parse_result = parser.parse_args()
         
         return arg_parse_result
