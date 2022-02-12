@@ -93,7 +93,7 @@ def tree_json(filename, json_name):
 		f.write(json_string)
 
 # db
-def init_stats(filename):
+def init_stat(filename):
     """
         json 파일에서 통계를 불러오고 사용 가능한 다음 문자 목록과 그 확률에 대한 두 번째 목록을 포함하는 사전 반환
     """ 
@@ -152,8 +152,6 @@ def get_value(id):
 
     return "False"
 
-if __name__ == '__main__':
-    print(init_stats("odds.json"))
 
 
 # tester
@@ -265,12 +263,12 @@ def payload_check(URL, payload):
 
 	return "normal"
 
-
+'''
 if __name__ == '__main__':
-	URL = "http://s130993-101229-fax.croto.hack.me/login.php"
+    	URL = "http://s130993-101229-fax.croto.hack.me/login.php"
 	payload = "\' or 1=1 -- "
 	print(payload_check(URL, payload))
-
+'''
   
 def change_report_in_string(s, info):
     """
@@ -334,7 +332,7 @@ def init_stats(filename):
     #sql_generator 모듈의 통계를 초기화합니다.
     global stats
 
-    stats = init_stats(filename)
+    stats = init_stat(filename)
 
 def is_duplicated(s):
     # 인자끝에 3개 이상의 동일한 문자가 있는지 확인하여 True 또는 False를 반환시킨다.
