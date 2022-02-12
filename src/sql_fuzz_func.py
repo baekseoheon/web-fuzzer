@@ -16,8 +16,6 @@ import urllib3
 
 MAX_RECURSION = 5
 MAX_REPS = 10
-FILENAME = "sql_bank.txt"
-JSON_NAME = "odds.json"
 CHECK_LOADTIME_NUM = 10
 
 url = "http://127.0.0.1/login/"
@@ -47,50 +45,49 @@ tree_list = []
 all_strings = []
 
 # sharpener
+FILENAME = "sql_bank.txt"
+JSON_NAME = "odds.json"
 
-filename = FILENAME
-json_name = JSON_NAME
+with open(FILENAME) as f:
+    lines = f.readlines()
 
-def tree_json(filename, json_name):
-	with open(filename) as f:
-		lines = f.readlines()
+unique_char = set()
 
-	unique_char = set()
+for line in lines:
+    for word in line.split():
+        if word == "\n":
+            continue
+        unique_char.add(word)
 
-	for line in lines:
-		for word in line.split():
-			if word == "\n":
-				continue
-			unique_char.add(word)
+next_char = {}
 
-	next_char = {}
+for chr in unique_char:
+    next_char[chr] = []
 
-	for chr in unique_char:
-		next_char[chr] = []
+for line in lines:
+    line = line.split()
+    for i in range(len(line)-1):
+        if line[i] == "\n" or line[i+1] == "\n":
+            break
+        next_char[line[i]].append(line[i+1])
 
-	for line in lines:
-		line = line.split()
-		for i in range(len(line)-1):
-			if line[i] == "\n" or line[i+1] == "\n":
-				break
-			next_char[line[i]].append(line[i+1])
+stats_char = {}
 
-	stats_char = {}
+for key, value in next_char.items():
+    # print(value)
+    total_chars = len(value)
+    stats_char[key] = {}
+    for chr in set(value):
+        char_count = value.count(chr)
+        stat = float(char_count / total_chars)
+        stats_char[key][chr] = stat
 
-	for key, value in next_char.items():
-		# print(value)
-		total_chars = len(value)
-		stats_char[key] = {}
-		for chr in set(value):
-			char_count = value.count(chr)
-			stat = float(char_count / total_chars)
-			stats_char[key][chr] = stat
-
-	json_string = json.dumps(stats_char, indent=4)
-	with open(json_name, "w") as f:
-		f.write(json_string)
+json_string = json.dumps(stats_char, indent=4)
+with open(json_name, "w") as f:
+    f.write(json_string)
 
 # db
+
 def init_stat(filename):
     """
         json 파일에서 통계를 불러오고 사용 가능한 다음 문자 목록과 그 확률에 대한 두 번째 목록을 포함하는 사전 반환
@@ -149,8 +146,6 @@ def get_value(id):
             return tree[id].tag
 
     return "False"
-
-
 
 # tester
 
