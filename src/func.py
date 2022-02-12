@@ -155,11 +155,6 @@ def xss_scan_v2(url):
         print(formtag)
     driver.close
 
-
-    
-
-
-    
 def xss_scan(url):
     options = webdriver.ChromeOptions()
     options.add_argument('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36')
@@ -249,6 +244,3 @@ def web_scan(url):
     with open("result/"+delschema(url)+"_web_scan.txt", "a+") as ff:
         ff.write('[' + str(res.status_code) + '] ' + str(res.url) + '\n' + str(res.headers) +'\n' + str(res.cookies) + '\n\n')
         ff.close()
-
-
-    

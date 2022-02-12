@@ -10,6 +10,8 @@ from banner import *
 from arg_parse import *
 from usage import *
 from func import *
+from sql_fuzz_func import *
+import logging
 
 if sys.version > '3':
     import urllib.parse as urlparse
@@ -28,7 +30,13 @@ except:
 wl_file = 'wordlist.txt'
 ext = [".php", ".txt"]
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36'
-    
+
+url = "http://127.0.0.1/login/"
+total_base_strings = 10
+max_tries = 7
+file = "Tools/Database/odds.json"
+debug_mode = False
+
 if __name__=="__main__":
     banner()
     specify_text_color()
@@ -37,15 +45,15 @@ if __name__=="__main__":
         target = arg_parse_result.url
     
     if arg_parse_result.file:
-        wordlist_name = arg_parse_result.file
-    else: wordlist_name = None    
+        file_name = arg_parse_result.file
+    else: file_name = None    
     
     if arg_parse_result.brute_flag:
-        if wordlist_name is not None:
+        if file_name is not None:
             print("------------------------------")
             print('loading wordlist....')
             print("------------------------------\n")
-            wordlist = wordlist_name
+            wordlist = file_name
             #d_queue = create_wordlist(wordlist_name)
             print("------------------------------")
             print('loaded wordlist....')
@@ -69,7 +77,12 @@ if __name__=="__main__":
         xss_scan_v2(target)
         
     elif arg_parse_result.sql_flag:
-        print("sql injection()")
+        if arg_parse_result.file:
+            init_stats(file)
+        if arg_parse_result.debug_mode:
+            debug_mode = arg_parse_result.debug_mode
+        sql_fuzz(debug_mode)
+        
     elif arg_parse_result.web_scan_flag:
         web_scan(target)
         
