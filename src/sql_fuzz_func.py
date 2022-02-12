@@ -83,7 +83,7 @@ for key, value in next_char.items():
         stats_char[key][chr] = stat
 
 json_string = json.dumps(stats_char, indent=4)
-with open(json_name, "w") as f:
+with open(JSON_NAME, "w") as f:
     f.write(json_string)
 
 # db
