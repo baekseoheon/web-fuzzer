@@ -22,13 +22,11 @@ FILENAME = "sql_bank.txt"
 JSON_NAME = "odds.json"
 CHECK_LOADTIME_NUM = 10
 
-filename = "sql_bank.txt"
-json_name = "odds.json"
+url = "http://127.0.0.1/login/"
 
 tree_list = []
 all_strings = []
 
-url = "http://127.0.0.1/login/"
 total_base_strings = 10
 max_tries = 7
 file = "Tools/Database/odds.json"
@@ -40,15 +38,12 @@ opening_chars = ["\'", "\"", ")", "1"]
 comment_chars = ["#", "--", "'vRxe'='vRxe"]
 string_trees = []
 
-
 stats = None
-
 
 test_logger = logging.getLogger("Tester")
 
 # 로그 메시지 비활성화
 logging.getLogger("urllib3").setLevel(logging.WARNING)
-
 
 time_to_load = 0.0
 
@@ -60,7 +55,7 @@ all_strings = []
 filename = FILENAME
 json_name = JSON_NAME
 
-def tree_json(filename, json_name)
+def tree_json(filename, json_name):
 	with open(filename) as f:
 		lines = f.readlines()
 
@@ -526,5 +521,4 @@ def sql_fuzz(debug_mode):
     return successful_list
 
 if __name__ == '__main__':
-    print(stats)
-
+    sql_fuzz()
