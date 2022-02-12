@@ -36,8 +36,6 @@ opening_chars = ["\'", "\"", ")", "1"]
 comment_chars = ["#", "--", "'vRxe'='vRxe"]
 string_trees = []
 
-stats = None
-
 test_logger = logging.getLogger("Tester")
 
 # 로그 메시지 비활성화
@@ -330,6 +328,7 @@ def txt_results():
 
 def init_stats(filename):
     #sql_generator 모듈의 통계를 초기화합니다.
+    
     global stats
 
     stats = init_stat(filename)
