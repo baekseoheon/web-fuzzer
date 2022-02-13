@@ -44,9 +44,6 @@ def init_args():
     인자 초기화
     """
     global url, total_base_strings, max_tries, file, debug_mode
-    with open("txt/help.txt") as f:
-        help_lines = f.readlines()
-        help_lines = "".join(help_lines)
     arg_parse_result = arg_parse()
     if arg_parse_result.url:
         url = arg_parse_result.url
