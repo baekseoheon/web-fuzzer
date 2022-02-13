@@ -66,7 +66,8 @@ def make_webdriver(url):
 
         return driver
     except Exception:
-        driver.quit()
+        print("make webdriver error\n")
+        #driver.quit()
         return False
 
 def delencode(url):
