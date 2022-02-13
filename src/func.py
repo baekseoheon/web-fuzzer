@@ -1,15 +1,11 @@
 #!/bin/python3
 
-import sys, os, re, queue, requests, time, urllib3, websockets.client, concurrent.futures
-import http.client as httplib
+import sys, os, re, queue, requests, concurrent.futures
 import urllib.parse as p 
-import urllib.error as e
 import requests.exceptions as reqe
-from distutils import errors
 from pdb import post_mortem
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from seleniumrequests import Chrome
 from urllib.parse import urljoin
 from requests_html import HTMLSession
 

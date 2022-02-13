@@ -8,3 +8,8 @@ requests==2.23.0
 soupsieve==2.0.1
 treelib==1.6.1
 urllib3==1.25.9
+bs4==0.0.1
+pyfiglet==0.8.post1
+requests-html==0.10.0
+selenium==4.1.0
+websockets==10.1

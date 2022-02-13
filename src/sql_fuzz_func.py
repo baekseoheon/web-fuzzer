@@ -1,9 +1,5 @@
+import json, requests, uuid, logging
 import numpy as np
-import uuid
-import logging
-import requests
-import json
-import sys
 from datetime import date
 from treelib import Tree, Node
 from bs4 import BeautifulSoup
@@ -307,8 +303,6 @@ if __name__ == '__main__':
     print(stats)
 '''
 
-#tester
-
 def get_input_fields(URL):
     # URL을 가져오고 그 URL에 있는 모든 입력 태그의 ID와 이름을 반환 
     # :매개변수: URL - 정보를 가져올 URL
@@ -416,11 +410,12 @@ def payload_check(URL, payload):
 
 	return "normal"
 
-
+"""
 if __name__ == '__main__':
 	URL = "http://s130993-101229-fax.croto.hack.me/login.php"
 	payload = "\' or 1=1 -- "
 	print(payload_check(URL, payload))
+"""
 
 def init_stat(filename):
     """
@@ -484,8 +479,6 @@ def get_value(id):
 if __name__ == '__main__':
     print(init_stats("odds.json"))
 '''
-
-#sharpener.py
 
 FILENAME = "sql_bank.txt"
 JSON_NAME = "odds.json"

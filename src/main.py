@@ -1,7 +1,5 @@
-import sys, os, time, requests, logging
 from __future__ import print_function
-from ast import arg
-from re import X
+import os, requests
 from pprint import pprint
 from text_color import *
 from banner import *
@@ -9,13 +7,6 @@ from arg_parse import *
 from usage import *
 from func import *
 from sql_fuzz_func import *
-
-if sys.version > '3':
-    import urllib.parse as urlparse
-    import urllib.parse as urllib
-else:
-    import urlparse
-    import urllib
     
 try:
     import requests.packages.urllib3
@@ -27,12 +18,6 @@ except:
 wl_file = 'wordlist.txt'
 ext = [".php", ".txt"]
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36'
-
-url = "http://127.0.0.1/login/"
-total_base_strings = 10
-max_tries = 7
-file = "Tools/Database/odds.json"
-debug_mode = False
 
 if __name__=="__main__":
     banner()
@@ -71,6 +56,7 @@ if __name__=="__main__":
             result = [executor.submit(brute_dir, d_queue, target, ext) for _ in range(10)]
         '''    
     elif arg_parse_result.xss_flag:
+        target = make_url(target)
         xss_scan(target)
         
     elif arg_parse_result.sql_flag:
