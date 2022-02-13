@@ -78,18 +78,13 @@ if __name__=="__main__":
         xss_scan_v2(target)
         
     elif arg_parse_result.sql_flag:
-        if arg_parse_result.file:
-            init_stats(file)
-        if arg_parse_result.debug_mode:
-            debug_mode = arg_parse_result.debug_mode
-                   
         if not os.path.isdir("logs"):
             os.mkdir("logs")
             if not os.path.isfile("logs/fuzzer.log"):
                 f = open("logs/fuzzer.log", 'w')
                 f.close()
-
-        sql_fuzz(debug_mode)     
+        init_args()
+        sql_fuzz() 
         
     elif arg_parse_result.web_scan_flag:
         web_scan(target)
