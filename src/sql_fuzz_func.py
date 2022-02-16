@@ -46,9 +46,9 @@ def init_args():
     if arg_parse_result.file:
         file = arg_parse_result.file
     if arg_parse_result.total_base_strings:
-        total_base_strings = arg_parse_result.total_base_strings
+        total_base_strings = int(arg_parse_result.total_base_strings)
     if arg_parse_result.max_tries:
-        max_tries = arg_parse_result.max_tries
+        max_tries = int(arg_parse_result.max_tries)
     if arg_parse_result.debug_mode:
         debug_mode = arg_parse_result.debug_mode
     init_stats(file)
