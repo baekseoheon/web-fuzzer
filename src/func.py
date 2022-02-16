@@ -4,7 +4,7 @@ from importlib import import_module
 import sys, os, re, queue, requests, concurrent.futures
 import urllib.parse as p 
 import requests.exceptions as reqe
-import urlparse
+import urllib.parse as urlparse
 from pdb import post_mortem
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -171,7 +171,7 @@ def dir_scan(target, wordlist, extensions=None):
 
                             with open("result_dir_scan/" + delschema(target) + "_dir_scan.txt", "a+") as ff:
                                 ff.write(url+'\n')
-                    #else: print("dont find : ", url)
+                    else: print("can't find : ", url)
                 else: print(f'there is no data : {url}\n')
 
             except(reqe.HTTPError) as er:
