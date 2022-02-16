@@ -11,7 +11,7 @@ def arg_parse():
         parser.add_argument('-S', '--sql-injection', action='store_true', dest='sql_flag', help='If you want to do sql injection attack on the url')
         parser.add_argument('-s', '--web-scan', action='store_true', dest='web_scan_flag', help='If you want to scan the web')
         parser.add_argument('-u', '--url', '--target', action='store', dest='url', help='The URL to analyze')
-        parser.add_argument('-m', '--max-total-string', action='store_true', dest='total_base_strings', help='Max total base strings, default 10')
+        parser.add_argument('-m', '--max-total-string', action='store', dest='total_base_strings', help='Max total base strings, default 10')
         parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0', help='check program version')
         parser.add_argument('-c', '--cookie', action='store', dest='cookies', help='Specify custom cookie values', nargs='+', default=[])
         parser.add_argument('-f', '--file', action='store', dest='file', help='specify file')
