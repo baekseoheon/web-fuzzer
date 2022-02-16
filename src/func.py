@@ -1,8 +1,10 @@
 #!/bin/python3
 
+from importlib import import_module
 import sys, os, re, queue, requests, concurrent.futures
 import urllib.parse as p 
 import requests.exceptions as reqe
+import urlparse
 from pdb import post_mortem
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -67,6 +69,7 @@ def make_webdriver(url):
         return driver
     except Exception:
         print("make webdriver error\n")
+        sys.exit(1)
         #driver.quit()
         return False
 
@@ -274,9 +277,9 @@ def submit(form_details, url, payload, user_agent, cookies):
         if input_name and input_value:
             data[input_name] = input_value
         
-        session = requests.Session()
-        headers = {'User-Agent':user_agent}
-        session.headers.update(headers)
+        #session = requests.Session()
+        #headers = {'User-Agent':user_agent}
+        #session.headers.update(headers)
 
     if form_details["method"] == "post":
         if cookies:
@@ -294,6 +297,7 @@ def xss_scan(url):
     user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.77 Safari/537.36'
     cookies = {}
     redirect = False
+    is_vulnerable = False
 
     url = make_url(url)
     
